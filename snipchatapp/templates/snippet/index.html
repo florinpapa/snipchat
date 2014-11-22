@@ -1,0 +1,16 @@
+{% extends 'template_header.html' %}
+
+{% block content %}
+{% if snippet %}
+  <h1> Snippet </h1>
+  <pre>
+    <code>
+      {{ snippet.code }}
+    </code>
+  </pre>
+  <p>User: {{ snippet.user }} </p>
+  <p> {{ snippet.pub_date }} </p>
+{% else %}
+  <h1> No such snippet available</h1>
+  {% endif %}
+{% endblock %}
