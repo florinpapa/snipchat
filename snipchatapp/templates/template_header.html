@@ -1,11 +1,13 @@
+{% load staticfiles %}
 <!doctype html>
 <html>
   <title>Snippet x</title>
   <head>
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
   </head>
   <body>
-    
-    {% block content %}{% endblock %}
-
+    <div class="container-fluid">
+    	{% block content %}{% endblock %}
+    </div>
   </body>
 </html>
