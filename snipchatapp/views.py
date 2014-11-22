@@ -23,6 +23,10 @@ def index(request):
     context = {'snippet': Snippets.objects.order_by('-pub_date')[:1][0]}
     return render(request, 'snippet/index.html', context)
 
+def view_snippet(request, snippet_id):
+    context = {'snippet': Snippets.objects.get(identifier=snippet_id)}
+    return render(request, 'snippet/index.html', context)
+
 def add_snippet(request):
     if request.method == 'POST':
         code = request.POST['code']
@@ -30,7 +34,8 @@ def add_snippet(request):
         identifier = random_identifier()
         snippet = Snippets(code=code, user=user, identifier=identifier, pub_date=timezone.now())
         snippet.save()
-        return render(request, 'snippet/add_snippet.html')
+        return view_snippet(request, identifier)
+        #return render(request, 'snippet/add_snippet.html')
     else:
         return render(request, 'snippet/add_snippet.html')
 
