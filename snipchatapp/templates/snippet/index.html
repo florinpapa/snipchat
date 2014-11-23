@@ -2,23 +2,67 @@
 
 {% block content %}
 {% if snippet %}
-  <h1> Snippet </h1>
-  <pre>
-    <code>
-      {{ snippet.code }}
-    </code>
-  </pre>
-  <p>User: {{ snippet.user }} </p>
-  <p> {{ snippet.pub_date }} </p>
-
-  <div class="row">
-    <div class="col-md-9">
-      <div class="row">
-        <textarea class="form-control" rows="3" id="textArea"></textarea>
+  <!-- <div class="container-fluid"> -->
+    <div class="row">
+      <div class="col-md-9">
+        <ul class="nav nav-pills">
+          <li class="active"><a href="#">Home</a></li>
+          <li><a href="#">Profile</a></li>
+          <li class="disabled"><a href="#">Disabled</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+              Dropdown <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Action</a></li>
+              <li><a href="#">Another action</a></li>
+              <li><a href="#">Something else here</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Separated link</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-2">
+        <a class="navbar-brand" href="#">SnipChat</a>
       </div>
     </div>
-    <div class="col-md-3">.col-md-3</div>
+
+    <div class="row">
+      <div class="col-md-9">
+        <div class="row">
+          <div class="col-md-12">
+            <pre id="editor">
+              {{ snippet.code }}
+            </pre>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8"></div>
+          <div class="col-md-1">
+            <a href="#" class="btn btn-success">Share</a>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-1">
+            <a href="#" class="btn btn-primary">Save</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">Versions</div>
+          <div class="panel-body">
+            Version 1
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <p>User: {{ snippet.user }} </p>
+    <p> {{ snippet.pub_date }} </p> -->
   </div>
+
 {% else %}
   <h1> No such snippet available</h1>
   {% endif %}

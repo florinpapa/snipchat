@@ -1,13 +1,23 @@
 {% load staticfiles %}
 <!doctype html>
-<html>
+<html lang="en">
   <title>Snippet x</title>
   <head>
     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/extras.css' %}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
   </head>
   <body>
     <div class="container-fluid">
-    	{% block content %}{% endblock %}
+        {% block content %}{% endblock %}
     </div>
+
+    <script src="{{ STATIC_URL }}javascript/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+      var editor = ace.edit("editor");
+      editor.setTheme("ace/theme/twilight");
+      editor.getSession().setMode("ace/mode/c_cpp");
+    </script>
   </body>
 </html>
