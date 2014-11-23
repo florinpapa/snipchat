@@ -45,7 +45,10 @@
           </div>
           <div class="col-md-1"></div>
           <div class="col-md-1">
-            <a href="#" class="btn btn-primary">Save</a>
+            <div style="display:none">
+              {% csrf_token %}
+            </div>
+            <a href="#" id="save" class="btn btn-primary">Save</a>
           </div>
         </div>
       </div>
