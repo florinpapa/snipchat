@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
+from django.shortcuts import redirect
 
 from snipchatapp.models import Snippets, Users, Comments
 
@@ -34,8 +35,7 @@ def add_snippet(request):
         identifier = random_identifier()
         snippet = Snippets(code=code, user=user, identifier=identifier, pub_date=timezone.now())
         snippet.save()
-        return view_snippet(request, identifier)
-        #return render(request, 'snippet/add_snippet.html')
+        return redirect('/snippet/snippet/' + identifier)
     else:
         return render(request, 'snippet/add_snippet.html')
 
