@@ -35,7 +35,7 @@ def add_snippet(request):
         identifier = random_identifier()
         snippet = Snippets(code=code, user=user, identifier=identifier, pub_date=timezone.now())
         snippet.save()
-        return redirect('/snippet/snippet/' + identifier)
+        return redirect('/snippet/' + identifier)
     else:
         return render(request, 'snippet/add_snippet.html')
 
