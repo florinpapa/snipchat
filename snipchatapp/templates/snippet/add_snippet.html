@@ -2,23 +2,46 @@
 
 {% block content %}
 
-  <h1>Add a new snippet</h1>
-
   <form method="POST" action="{% url 'add_snippet' %}">
   {% csrf_token %}
-  <table>
-    <tr>
-      <td>
-        <textarea name="code" rows=10 cols=90></textarea>
-      </td>
-    </tr>
-    <tr>
-      <td>
-        <input type="submit" value="submit">
-      </td>
-    </tr>
-  </table>
-  </form>
+    <div class="row">
+      <div class="col-md-9">
+        <ul class="nav nav-pills">
+          <li class="active"><a href="{% url 'add_snippet' %}">Home</a></li>
+          <li><a href="#">Profile</a></li>
+        </ul>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-2">
+        <a class="navbar-brand" href="#">SnipChat</a>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-9">
+        <div class="row">
+          <div class="col-md-12">
+            <div id="editor"></div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-8"></div>
+          <div class="col-md-1"></div>
+          <div class="col-md-1"></div>
+          <div class="col-md-1">
+            <div style="display:none">
+              {% csrf_token %}
+            </div>
+            <a href="#" id="submit" class="btn btn-primary">Save</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        {% include "snippet/versions.html" %}
+      </div>
+    </div>
+
+  </div>
 
 
 {% endblock %}
