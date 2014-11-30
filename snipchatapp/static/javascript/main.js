@@ -10,7 +10,7 @@
 
   function getCookie(name) {
     var cookieValue = null;
-    if (document.cookie && document.cookie != '') {
+    if (document.cookie && document.cookie !== '') {
       var cookies = document.cookie.split(';');
       for (var i = 0; i < cookies.length; i++) {
         var cookie = jQuery.trim(cookies[i]);
@@ -76,22 +76,54 @@
     return row;
   }
 
+  function commentsOnRow(row) {
+    return function(comment) {
+      return comment.row == row;
+    };
+  }
+
   function addCommentForm(top, row, data) {
     var $commentContainer = $(data);
     if (row >= 0) {
-      $commentContainer.css("top", top - 77);
+
+      var comments = parseEditorComments()
+                     .filter(function(c) {return c.row == row;});
+                         
+      $commentContainer.css("top", top - 70);
       $form = $('form', $commentContainer);
-      $form.on('submit', addInlineComment.bind($form, row));
+      $submit = $('#submit', $form);
+      $cancel = $('#cancel', $form);
+      $submit.on('click', addInlineComment.bind($form, row));
+      $cancel.on('click', cancelComment.bind($form));
       $('#editor').append($commentContainer);
+
+      $('.code-comment').each(function(idx, comment) {
+        var r = parseInt($('.row', comment).text());
+        if (r == row) {
+          $('.inline-comment_container').prepend($(comment).clone());
+        }
+      });
+    
     }
+  }
+
+  function cancelComment(e) {
+    e.preventDefault();
+    this.parent().remove();
   }
 
   function addInlineComment(row, e) {
     e.preventDefault();
-    var $this = $(this);
-    var url = location.origin + '/snippet' + $this.attr('action');
-    var comment = $('textarea', $this).val();
-    var token = $('input[name=csrfmiddlewaretoken]', $this).val();
+
+    var $this = $(this),
+        url = location.origin + '/snippet' + $this.attr('action'),
+        comment = $('textarea', $this).val(),
+        token = $('input[name=csrfmiddlewaretoken]', $this).val();
+
+    if (!comment.length) {
+      return;
+    }
+
     $.post(url, {
       csrfmiddlewaretoken: token,
       comment: comment,
@@ -103,17 +135,24 @@
     });
   }
 
-  function renderEditorComments() {
+  function parseEditorComments() {
     var comments = $('.code-comment');
+    var annotations = [];
     comments.each(function(idx, ref) {
       var $ref = $(ref);
-      editor.getSession().setAnnotations([{
+      annotations.push({
         row: parseInt($('.row', $ref).text()),
-        column: 10,
-        text: $('.comment', $ref).text(),
+        column: 0,
+        text: $('.comment', $ref).text().trim(),
         type: "warning"
-      }]);
+      });
     });
+    return annotations;
+  }
+
+  function renderEditorComments() {
+    editor.getSession()
+        .setAnnotations(parseEditorComments());
   }
 
   renderEditorComments();

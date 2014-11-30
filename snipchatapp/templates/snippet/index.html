@@ -29,16 +29,18 @@
       </div>
     </div>
 
+    <div class="hidden">
     {% for comment in comments %}
       <div class="code-comment">
         <div class="comment">
-          {{ comment.comment }}
+          {{ comment.user }}: {{ comment.comment }}
         </div>
-        <div class="row">
+        <div class="row hidden">
           {{ comment.row }}
         </div>
       </div>
     {% endfor %}
+    </div>
 
     <div class="row">
       <div class="col-md-9">
