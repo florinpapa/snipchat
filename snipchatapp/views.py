@@ -29,7 +29,7 @@ def view_snippet(request, snippet_id):
     versions = snippet.history.split('|')[:-1]
     for i in range(len(versions)):
         current_version = []
-        current_version.append(i)
+        current_version.append(versions[i])
         full_date = Snippets.objects.get(identifier=versions[i]).pub_date
         date_str = full_date.strftime("%d/%m/%Y")
         time_str = full_date.strftime("%H:%M")
