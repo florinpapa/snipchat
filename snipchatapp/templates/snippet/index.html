@@ -45,16 +45,27 @@
           </div>
           <div class="col-md-1"></div>
           <div class="col-md-1">
-            <a href="#" class="btn btn-primary">Save</a>
+            <div style="display:none">
+              {% csrf_token %}
+            </div>
+            <a href="#" id="save" class="btn btn-primary">Save</a>
           </div>
         </div>
       </div>
       <div class="col-md-3">
         <div class="panel panel-default">
           <div class="panel-heading">Versions</div>
-          <div class="panel-body">
-            Version 1
-          </div>
+          {% if versions|length > 1 %}
+            {% for version in versions %}
+            <div class="panel-body">
+              Version {{ version }}
+            </div>
+            {% endfor %}
+          {% else %}
+            <div class="panel-body">
+              No versions available
+            </div>
+          {% endif %}
         </div>
       </div>
     </div>

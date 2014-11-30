@@ -17,6 +17,7 @@ class Snippets(models.Model):
   def __str__(self):
     return self.identifier
   code = models.TextField()
+  history = models.CharField(max_length="255", null=True)
   revision = models.IntegerField(default=0)
   user = models.ForeignKey(Users)
   comments = models.ForeignKey(Comments, blank=True, null=True)
