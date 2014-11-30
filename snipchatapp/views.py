@@ -78,7 +78,7 @@ def add_snippet(request):
                            pub_date=timezone.now())
         snippet.history = identifier + "|"
         snippet.save()
-        return redirect('/snippet/snippet/' + identifier)
+        return redirect('/snippet/' + identifier)
     else:
         return render(request, 'snippet/add_snippet.html')
 
