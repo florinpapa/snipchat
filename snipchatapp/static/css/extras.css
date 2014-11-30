@@ -56,3 +56,12 @@ body {
   overflow: scroll;
   overflow-x: hidden;
 }
+
+.inline-comment_container {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: 0 1.5rem;
+  background: #fff;
+  z-index: 100;
+}

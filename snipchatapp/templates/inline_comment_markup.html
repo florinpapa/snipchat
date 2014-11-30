@@ -1,0 +1,8 @@
+<div class="inline-comment_container">
+  <form action="/add_comment/{{ snippet_id }}/" method="POST">
+    {% csrf_token %}
+    <textarea name="comment"></textarea>
+    <input type="hidden" value="0" name="row">
+    <input type="submit" value="submit">
+  </form>
+</div>
