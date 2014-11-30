@@ -1,0 +1,17 @@
+{% extends "template_header.html" %}
+
+{% block content %}
+
+{% if form.errors %}
+<p>Your username and password didn't match. Please try again.</p>
+{% endif %}
+
+<h1>Create an account</h1>
+
+<form action="{% url 'register' %}" method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <input type="submit" value="Create the account">
+</form>
+
+{% endblock %}
