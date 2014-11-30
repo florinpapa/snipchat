@@ -29,6 +29,17 @@
       </div>
     </div>
 
+    {% for comment in comments %}
+      <div class="code-comment">
+        <div class="comment">
+          {{ comment.comment }}
+        </div>
+        <div class="row">
+          {{ comment.row }}
+        </div>
+      </div>
+    {% endfor %}
+
     <div class="row">
       <div class="col-md-9">
         <div class="row">
