@@ -2,19 +2,6 @@
 
 {% block content %}
 {% if snippet %}
-  <!-- <div class="container-fluid"> -->
-    <div class="row">
-      <div class="col-md-9">
-        <ul class="nav nav-pills">
-          <li class="active"><a href="{% url 'add_snippet' %}">Home</a></li>
-          <li><a href="{% url 'profile' snippet.user %}">Profile</a></li>
-        </ul>
-      </div>
-      <div class="col-md-1"></div>
-      <div class="col-md-2">
-        <a class="navbar-brand" href="#">SnipChat</a>
-      </div>
-    </div>
 
     <div class="hidden">
     {% for comment in comments %}

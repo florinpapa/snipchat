@@ -67,7 +67,7 @@ def login(request):
                                      password=password)
             if user is not None and user.is_active:
                 django_login(request, user)
-                return redirect('profile')
+                return redirect('profile', user.username)
     else:
         form = LoginForm()
     return render(request, 'login.html', {
