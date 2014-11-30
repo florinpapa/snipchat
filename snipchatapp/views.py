@@ -171,3 +171,15 @@ def new_version(request, snippet_id):
         }
         return HttpResponse(json.dumps(response),
                             content_type='application/json')
+
+def profile(request, username):
+    if request.user.is_authenticated():
+        current_user = User.objects.get(username=username)
+        user_snippets = Snippets.objects.all().filter(user=current_user)
+        context = {
+            'user': username,
+            'snippets': user_snippets
+        }
+        return render(request, 'profile.html', context)
+    else:
+        return redirect('login')
