@@ -88,7 +88,12 @@ def add_snippet(request):
                            pub_date=timezone.now())
         snippet.history = identifier + "|"
         snippet.save()
-        return redirect('/snippet/' + identifier)
+        response = {
+            'success': 'true',
+            'identifier': identifier
+        }
+        return HttpResponse(json.dumps(response),
+                            content_type='application/json')
     else:
         return render(request, 'snippet/add_snippet.html')
 

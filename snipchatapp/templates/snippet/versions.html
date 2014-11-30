@@ -3,13 +3,8 @@
   {% if version_date|length > 0 %}
     {% for version in version_date %}
     <div class="panel-body">
-      <a href="{% url 'view_snippet' version.0 %}">
-        Version {{ forloop.counter0 }}
-      </a>
-        <span id="date_format">
-          <strong>{{ version.1 }}</strong>
-        </span>
-      </a>
+      <a href="{% url 'view_snippet' version.0 %}">Version {{ forloop.counter0 }}</a>
+      <span id="date_format"><strong>{{ version.1 }}</strong></span>
     </div>
     {% endfor %}
   {% else %}

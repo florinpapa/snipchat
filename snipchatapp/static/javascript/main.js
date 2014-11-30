@@ -6,7 +6,15 @@
   editor.getSession().setMode("ace/mode/c_cpp");
 
   var save = $('#save');
-  save.on('click', saveVersion);
+  save.on('click', function(e) {
+    var identifier = location.href.match(/[a-zA-Z0-9]{6}/g).pop();
+    saveSnippet(e, location.origin + '/snippet/update/' + identifier + '/');
+  });
+
+  var add = $('#submit');
+  add.on('click', function(e) {
+    saveSnippet(e, location.origin + '/snippet/add_snippet/');
+  });
 
   function getCookie(name) {
     var cookieValue = null;
@@ -39,12 +47,11 @@
     }
   });
 
-  function saveVersion(e) {
+  function saveSnippet(e, url) {
     e.preventDefault();
 
     var code = editor.getSession().getValue();
-    var identifier = location.href.match(/[a-zA-Z0-9]{6}/g).pop();
-    $.post('http://localhost:8000/snippet/update/' + identifier + '/', {
+    $.post(url, {
       code: code,
     }).success(function(data) {
       console.log(data);
