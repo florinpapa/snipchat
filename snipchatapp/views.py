@@ -25,9 +25,19 @@ def index(request):
 
 def view_snippet(request, snippet_id):
     snippet = Snippets.objects.get(identifier=snippet_id)
+    version_date = []
+    versions = snippet.history.split('|')[:-1]
+    for i in range(len(versions)):
+        current_version = []
+        current_version.append(i)
+        full_date = Snippets.objects.get(identifier=versions[i]).pub_date
+        date_str = full_date.strftime("%d/%m/%Y")
+        time_str = full_date.strftime("%H:%M")
+        current_version.append(date_str + " " + time_str)
+        version_date.append(current_version)
     context = {
             'snippet': snippet,
-            'versions': snippet.history.split('|')[:-1] 
+            'version_date': version_date 
             }
     return render(request, 'snippet/index.html', context)
 

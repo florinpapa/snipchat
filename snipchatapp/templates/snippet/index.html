@@ -55,10 +55,12 @@
       <div class="col-md-3">
         <div class="panel panel-default">
           <div class="panel-heading">Versions</div>
-          {% if versions|length > 1 %}
-            {% for version in versions %}
+          {% if version_date|length > 0 %}
+            {% for version in version_date %}
             <div class="panel-body">
-              Version {{ version }}
+              Version {{ version.0 }} <span id="date_format">
+                                        <strong>{{ version.1 }}</strong>
+                                      </span>
             </div>
             {% endfor %}
           {% else %}
