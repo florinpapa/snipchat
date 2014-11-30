@@ -3,20 +3,6 @@
 {% block content %}
 
   <form method="POST" action="{% url 'add_snippet' %}">
-  {% csrf_token %}
-    <div class="row">
-      <div class="col-md-9">
-        <ul class="nav nav-pills">
-          <li><a href="{% url 'add_snippet' %}">Home</a></li>
-          <li><a href="#">Profile</a></li>
-        </ul>
-      </div>
-      <div class="col-md-1"></div>
-      <div class="col-md-2">
-        <a class="navbar-brand" href="#">SnipChat</a>
-      </div>
-    </div>
-
     <div class="row">
       <div class="col-md-9">
         <div class="row">
@@ -29,9 +15,7 @@
           <div class="col-md-1"></div>
           <div class="col-md-1"></div>
           <div class="col-md-1">
-            <div style="display:none">
-              {% csrf_token %}
-            </div>
+            {% csrf_token %}
             <a href="#" id="submit" class="btn btn-primary">Save</a>
           </div>
         </div>
