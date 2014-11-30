@@ -24,7 +24,11 @@ def index(request):
     return render(request, 'snippet/index.html', context)
 
 def view_snippet(request, snippet_id):
-    context = {'snippet': Snippets.objects.get(identifier=snippet_id)}
+    snippet = Snippets.objects.get(identifier=snippet_id)
+    context = {
+            'snippet': snippet,
+            'versions': snippet.history.split('|')[:-1] 
+            }
     return render(request, 'snippet/index.html', context)
 
 def add_snippet(request):
@@ -34,6 +38,7 @@ def add_snippet(request):
         identifier = random_identifier()
         snippet = Snippets(code=code, user=user, identifier=identifier,
                            pub_date=timezone.now())
+        snippet.history = identifier + "|"
         snippet.save()
         return redirect('/snippet/snippet/' + identifier)
     else:
@@ -41,7 +46,6 @@ def add_snippet(request):
 
 def new_version(request, snippet_id):
     if request.method == 'POST':
-        print "here"
         old_snippet = Snippets.objects.get(identifier=snippet_id)
         code = request.POST['code']
         user = Users.objects.all()[0]
@@ -49,6 +53,7 @@ def new_version(request, snippet_id):
         snippet = Snippets(code=code, user=user, identifier=identifier,
                            revision=old_snippet.revision + 1,
                            pub_date=timezone.now())
+        snippet.history = old_snippet.history + identifier + "|"
         snippet.save()
         response = {
             'success': 'true',
