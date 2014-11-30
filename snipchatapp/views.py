@@ -1,9 +1,11 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.utils import timezone
 import json
 from django.shortcuts import redirect
-from snipchatapp.models import Snippets, Users, Comments
+from snipchatapp.models import Snippets, Comments
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 from random import randrange
 
 def generate():
@@ -32,12 +34,35 @@ def inline_comment_html(request):
         return HttpResponse(json.dumps(response),
                             content_type='application/json')
 
-def add_comment(request, snippet_id):
+def register(request):
     if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            new_user = form.save()
+            return redirect('add_snippet')
+    else:
+        form = UserCreationForm()
+    return render(request, "register.html", {
+        'form': form,
+    })
+
+def login(request):
+    pass
+
+def log_out(request):
+    logout(request)
+    return redirect('logout')
+
+def logout(request):
+    print request.user.is_authenticated()
+    return render(request, 'logout.html')
+
+def add_comment(request, snippet_id):
+    if request.method == 'POST' and \
+            request.user.is_authenticated():
         snippet = Snippets.objects.get(identifier=snippet_id)
-        user = Users.objects.all()[0]
         comment = Comments(comment=request.POST['comment'],
-                           user=user,
+                           user=request.user,
                            row=request.POST['row'],
                            snippet=snippet,
                            pub_date=timezone.now())
@@ -50,7 +75,7 @@ def add_comment(request, snippet_id):
     else:
         response = {
             'success': 'false',
-            'message': 'Must make a POST request'
+            'message': 'Must be authenticated'
         }
         return HttpResponse(json.dumps(response),
                             content_type='application/json')

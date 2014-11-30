@@ -37,6 +37,7 @@
         <div class="row">
           {{ comment.row }}
         </div>
+
       </div>
     {% endfor %}
 
@@ -69,8 +70,10 @@
     <!-- <p>User: {{ snippet.user }} </p>
     <p> {{ snippet.pub_date }} </p> -->
   </div>
-
+ 
 {% else %}
   <h1> No such snippet available</h1>
   {% endif %}
+
+
 {% endblock %}

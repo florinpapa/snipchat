@@ -1,9 +1,19 @@
 (function() {
 
 
-  var editor = ace.edit("editor");
-  editor.setTheme("ace/theme/twilight");
-  editor.getSession().setMode("ace/mode/c_cpp");
+  if ($('#editor').length) {
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/twilight");
+    editor.getSession().setMode("ace/mode/c_cpp");
+    editor.on("gutterclick", function(e) {
+      var url = location.origin + '/snippet/inline_comment_html/';
+      var identifier = location.href.match(/[a-zA-Z0-9]{6}/g).pop();
+      var row = getLineNumber(e);
+      $.post(url, {snippet_id: identifier})
+      .success(addCommentForm.bind(this, e.y, row))
+      .fail(function(data) { console.log(data); });
+    });
+  }
 
   var save = $('#save');
   save.on('click', saveVersion);
@@ -54,15 +64,6 @@
     });
   }
 
-  editor.on("gutterclick", function(e) {
-    var url = location.origin + '/snippet/inline_comment_html/';
-    var identifier = location.href.match(/[a-zA-Z0-9]{6}/g).pop();
-    var row = getLineNumber(e);
-    $.post(url, {snippet_id: identifier})
-      .success(addCommentForm.bind(this, e.y, row))
-      .fail(function(data) { console.log(data); });
-  });
-
   function getLineNumber(e) {
     var target = e.domEvent.target;
     if (target.className.indexOf("ace_gutter-cell") == -1)
@@ -97,7 +98,9 @@
       comment: comment,
       row: row
     }).success(function(data) {
-      console.log(data);
+      if (data.success === 'false') {
+        location.href = location.origin + '/snippet/register/';
+      }
     }).fail(function(data) {
       console.log(data);
     });
