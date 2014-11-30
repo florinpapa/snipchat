@@ -1,10 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render
 from django.utils import timezone
+import json
 from django.shortcuts import redirect
-
 from snipchatapp.models import Snippets, Users, Comments
-
 from random import randrange
 
 def generate():
@@ -25,7 +24,11 @@ def index(request):
     return render(request, 'snippet/index.html', context)
 
 def view_snippet(request, snippet_id):
-    context = {'snippet': Snippets.objects.get(identifier=snippet_id)}
+    snippet = Snippets.objects.get(identifier=snippet_id)
+    context = {
+            'snippet': snippet,
+            'versions': snippet.history.split('|')[:-1] 
+            }
     return render(request, 'snippet/index.html', context)
 
 def add_snippet(request):
@@ -33,11 +36,35 @@ def add_snippet(request):
         code = request.POST['code']
         user = Users.objects.all()[0]
         identifier = random_identifier()
-        snippet = Snippets(code=code, user=user, identifier=identifier, pub_date=timezone.now())
+        snippet = Snippets(code=code, user=user, identifier=identifier,
+                           pub_date=timezone.now())
+        snippet.history = identifier + "|"
         snippet.save()
         return redirect('/snippet/snippet/' + identifier)
     else:
         return render(request, 'snippet/add_snippet.html')
 
-
-
+def new_version(request, snippet_id):
+    if request.method == 'POST':
+        old_snippet = Snippets.objects.get(identifier=snippet_id)
+        code = request.POST['code']
+        user = Users.objects.all()[0]
+        identifier = random_identifier()
+        snippet = Snippets(code=code, user=user, identifier=identifier,
+                           revision=old_snippet.revision + 1,
+                           pub_date=timezone.now())
+        snippet.history = old_snippet.history + identifier + "|"
+        snippet.save()
+        response = {
+            'success': 'true',
+            'identifier': identifier
+        }
+        return HttpResponse(json.dumps(response),
+                            content_type='application/json')
+    else:
+        response = {
+            'success': 'false',
+            'message': 'Must make a POST call'
+        }
+        return HttpResponse(json.dumps(response),
+                            content_type='application/json')
