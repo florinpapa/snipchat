@@ -48,7 +48,7 @@
       code: code,
     }).success(function(data) {
       console.log(data);
-      window.location.href = "http://localhost:8000/snippet/snippet/" + data.identifier;
+      window.location.href = "http://localhost:8000/snippet/" + data.identifier;
     }).fail(function(data) {
       console.log(data);
     });
