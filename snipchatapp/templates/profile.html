@@ -3,6 +3,31 @@
 {% block content %}
 
 {% if user %}
+  <div class="row">
+    <div class="col-md-12">
+      <h4>User: {{ user }}</h4>
+    </div>
+  </div>
+
+  <table class="table table-striped table-hover ">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Snippet</th>
+      <th>Date added</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for snippet in snippets %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="{% url 'view_snippet' snippet.identifier %}">{{ snippet.identifier }}</a></td>
+        <td>{{ snippet.pub_date }}</td>
+      </tr>
+    {% endfor %}
+    
+  </tbody>
+</table> 
 {% else %}
   <h1> No such user available</h1>
   {% endif %}
