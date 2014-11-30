@@ -6,8 +6,9 @@
   <div class="row">
     <div class="col-md-9">
       <ul class="nav nav-pills">
-        <li class="active"><a href="{% url 'add_snippet' %}">Home</a></li>
+        <li><a href="{% url 'add_snippet' %}">Home</a></li>
         <li><a href="{% url 'profile' snippet.user %}">Profile</a></li>
+        <li><a href="{% url 'logout' %}">Logout</a></li>
       </ul>
     </div>
     <div class="col-md-1"></div>
@@ -15,6 +16,32 @@
       <a class="navbar-brand" href="#">SnipChat</a>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>User: {{ user }}</h4>
+    </div>
+  </div>
+
+  <table class="table table-striped table-hover ">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Snippet</th>
+      <th>Date added</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for snippet in snippets %}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td><a href="{% url 'view_snippet' snippet.identifier %}">{{ snippet.identifier }}</a></td>
+        <td>{{ snippet.pub_date }}</td>
+      </tr>
+    {% endfor %}
+    
+  </tbody>
+</table> 
 {% else %}
   <h1> No such user available</h1>
   {% endif %}
