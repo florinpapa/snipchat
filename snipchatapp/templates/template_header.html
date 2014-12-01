@@ -14,7 +14,11 @@
       <div class="col-md-9">
         <ul class="nav nav-pills">
           <li class="active"><a href="{% url 'add_snippet' %}">Home</a></li>
-          <li><a href="{% url 'profile' snippet.user %}">Profile</a></li>
+          {% if user != 'AnonymousUser' %}
+            <li><a href="{% url 'profile' user.username %}">Profile</a></li>
+          {% else %}
+            <li><a href="{% url 'login' %}">Login</a></li>
+          {% endif %}
         </ul>
       </div>
       <div class="col-md-1"></div>

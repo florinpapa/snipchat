@@ -64,8 +64,11 @@
     $.post(url, {
       code: code,
     }).success(function(data) {
-      console.log(data);
-      window.location.href = location.origin + "/snippet/" + data.identifier;
+      if (data.success === 'false') {
+        location.href = location.origin + "/snippet/login/";
+      } else {
+        location.href = location.origin + "/snippet/" + data.identifier;
+      }
     }).fail(function(data) {
       console.log(data);
     });

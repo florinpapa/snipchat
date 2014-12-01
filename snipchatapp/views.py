@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from snipchatapp.models import Snippets, Comments
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import logout as django_logout
 from django.contrib.auth import authenticate, login as django_login
 from random import randrange
 from django import forms
@@ -131,21 +132,28 @@ def view_snippet(request, snippet_id):
 
 def add_snippet(request):
     if request.method == 'POST':
-        code = request.POST['code']
-        user = User.objects.all()[0]
-        identifier = random_identifier()
-        snippet = Snippets(code=code, user=user, identifier=identifier,
-                           pub_date=timezone.now())
-        snippet.history = identifier + "|"
-        snippet.save()
-        response = {
-            'success': 'true',
-            'identifier': identifier
-        }
+        if request.user and request.user.is_authenticated():
+            code = request.POST['code']
+            user = request.user
+            identifier = random_identifier()
+            snippet = Snippets(code=code, user=user, identifier=identifier,
+                               pub_date=timezone.now())
+            snippet.history = identifier + "|"
+            snippet.save()
+            response = {
+                'success': 'true',
+                'identifier': identifier
+            }
+        else:
+            response = {
+                'success': 'false',
+                'message': 'You are not authenticated'
+            }
         return HttpResponse(json.dumps(response),
                             content_type='application/json')
     else:
-        return render(request, 'snippet/add_snippet.html')
+        print request.user
+        return render(request, 'snippet/add_snippet.html', request)
 
 def new_version(request, snippet_id):
     if request.method == 'POST':
