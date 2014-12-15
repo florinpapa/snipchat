@@ -142,6 +142,8 @@
     }).success(function(data) {
       if (data.success === 'false') {
         location.href = location.origin + '/snippet/register/';
+      } else {
+        location.href = location.href;
       }
     }).fail(function(data) {
       console.log(data);
